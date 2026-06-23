@@ -24,6 +24,12 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.listen(PORT, () => {
-  console.log(`BigCommerce API server running on port ${PORT}`);
-});
+// Start a listener for local development. On Vercel the app is imported as a
+// serverless function instead, so only listen when run directly.
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`BigCommerce API server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
