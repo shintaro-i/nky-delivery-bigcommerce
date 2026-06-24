@@ -1,7 +1,5 @@
 {
-  "name": "nky-delivery-bigcommerce",
   "version": 2,
-  "public": false,
   "builds": [
     {
       "src": "index.js",
@@ -11,12 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "index.js"
+      "dest": "/index.js"
     }
-  ],
-  "env": {
-    "PORT": {
-      "default": "3001"
-    }
-  }
+  ]
 }
