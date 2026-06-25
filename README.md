@@ -74,6 +74,20 @@ PUT /api/addresses/:customerId/:addressId
 DELETE /api/addresses/:customerId/:addressId
 ```
 
+## テスト商品の登録
+
+送料計算は商品の `shipping_type` カスタムフィールドで配送区分を判定します。
+対応する値: `jouon` / `reizo` / `reito` / `osuimono` / `free_reizo` / `free_reito`。
+
+未登録の区分のテスト商品をまとめて作成するには（要 Products 書き込み権限のトークン）:
+
+```bash
+npm run seed
+```
+
+権限が無い場合は、管理画面 → Products → Add で商品を作成し、
+カスタムフィールド `shipping_type` に上記いずれかの値を設定してください。
+
 ## Vercel デプロイ
 
 ```bash
