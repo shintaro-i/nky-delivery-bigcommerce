@@ -4,6 +4,7 @@ const cors = require('cors');
 const shippingCalculate = require('./api/routes/shipping-calculate');
 const addresses = require('./api/routes/addresses');
 const products = require('./api/routes/products');
+const categories = require('./api/routes/categories');
 const orders = require('./api/routes/orders');
 
 const path = require('path');
@@ -18,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/shipping-calculate', shippingCalculate);
 app.use('/api/addresses', addresses);
 app.use('/api/products', products);
+app.use('/api/categories', categories);
 app.use('/api/orders', orders);
 
 app.get('/health', (req, res) => {

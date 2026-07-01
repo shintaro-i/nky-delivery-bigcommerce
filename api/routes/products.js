@@ -11,8 +11,9 @@ router.get('/', async (req, res) => {
   try {
     const limit = Math.min(parseInt(req.query.limit, 10) || 50, 250);
     const page = parseInt(req.query.page, 10) || 1;
+    const categoryId = parseInt(req.query.categoryId, 10) || undefined;
 
-    const { products, pagination } = await listProducts({ limit, page });
+    const { products, pagination } = await listProducts({ limit, page, categoryId });
     res.json({ products, pagination });
   } catch (error) {
     console.error('Product list error:', error.message);
