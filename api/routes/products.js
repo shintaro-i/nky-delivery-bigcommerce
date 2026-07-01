@@ -1,5 +1,5 @@
 const express = require('express');
-const { listProducts } = require('../../lib/bigcommerce');
+const { listProducts, getProductDetail } = require('../../lib/bigcommerce');
 
 const router = express.Router();
 
@@ -17,6 +17,24 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Product list error:', error.message);
     res.status(500).json({ error: 'Failed to fetch products' });
+  }
+});
+
+/**
+ * GET /api/products/:id
+ * Returns a single product's full detail (description, images, tax-inclusive
+ * price, shipping_type).
+ */
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await getProductDetail(req.params.id);
+    if (!product) {
+      return res.status(404).json({ error: `Product not found: ${req.params.id}` });
+    }
+    res.json({ product });
+  } catch (error) {
+    console.error('Product detail error:', error.message);
+    res.status(500).json({ error: 'Failed to fetch product' });
   }
 });
 
