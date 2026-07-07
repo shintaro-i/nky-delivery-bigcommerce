@@ -1,7 +1,26 @@
 const express = require('express');
-const { listProducts, getProductDetail } = require('../../lib/bigcommerce');
+const { listProducts, getProductDetail, getInventory } = require('../../lib/bigcommerce');
 
 const router = express.Router();
+
+/**
+ * GET /api/products/inventory?ids=1,2,3
+ * Returns inventory tracking/level per product for stock validation.
+ * NOTE: must be declared before '/:id'.
+ */
+router.get('/inventory', async (req, res) => {
+  try {
+    const ids = String(req.query.ids || '')
+      .split(',')
+      .map((s) => parseInt(s, 10))
+      .filter(Boolean);
+    const inventory = await getInventory(ids);
+    res.json({ inventory });
+  } catch (error) {
+    console.error('Inventory error:', error.message);
+    res.status(500).json({ error: 'Failed to fetch inventory' });
+  }
+});
 
 /**
  * GET /api/products?limit=&page=
