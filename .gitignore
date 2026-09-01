@@ -8,3 +8,6 @@ build/
 .vercel/
 .claude/
 memo.txt
+.wrangler/
+.dev.vars
+.open-next/

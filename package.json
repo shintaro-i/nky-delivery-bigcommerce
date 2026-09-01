@@ -6,7 +6,11 @@
   "scripts": {
     "dev": "node index.js",
     "seed": "node scripts/seed-test-products.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "wrangler deploy",
+    "cf:typecheck": "tsc --noEmit",
+    "cf:typegen": "wrangler types"
   },
   "repository": {
     "type": "git",
@@ -25,6 +29,12 @@
     "cors": "^2.8.6",
     "csv-parse": "^7.0.0",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "hono": "^4.13.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260901.1",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.127.1"
   }
 }

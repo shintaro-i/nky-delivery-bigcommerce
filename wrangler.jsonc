@@ -1,0 +1,10 @@
+{
+  // BigCommerce 配送/データAPI(Cloudflare Worker / Hono版)。
+  // 既存の Express(index.js) + Vercel は当面そのまま。Vercel はこのファイルを無視する。
+  // 本番/テストの Cloudflare 化時に `npm run cf:deploy` でこの Worker をデプロイする。
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nky-delivery-bigcommerce",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-08-01",
+  "observability": { "enabled": true }
+}
