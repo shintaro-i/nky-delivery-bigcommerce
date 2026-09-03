@@ -126,15 +126,20 @@ export function createBc(env: Env) {
 
     const products = (data.data as any[]).map((p) => {
       const cf = (p.custom_fields || []).find((c: any) => c.name === "shipping_type");
-      const image =
-        (p.images || []).find((img: any) => img.is_thumbnail) || (p.images || [])[0];
+      const imgs = [...(p.images || [])].sort(
+        (a: any, b: any) => a.sort_order - b.sort_order
+      );
+      const primary = imgs.find((img: any) => img.is_thumbnail) || imgs[0];
+      // ホバー用の2枚目(中身写真など)。primary と別の画像があれば採用。
+      const hover = imgs.find((img: any) => img !== primary);
       return {
         id: p.id,
         name: p.name,
         sku: p.sku,
         price: p.price,
         shippingType: cf ? cf.value : null,
-        imageUrl: image ? image.url_standard : null,
+        imageUrl: primary ? primary.url_standard : null,
+        hoverImageUrl: hover ? hover.url_standard : null,
       };
     });
 
