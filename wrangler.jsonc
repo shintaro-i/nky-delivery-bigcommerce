@@ -1,10 +1,28 @@
 {
-  // BigCommerce 配送/データAPI(Cloudflare Worker / Hono版)。
-  // 既存の Express(index.js) + Vercel は当面そのまま。Vercel はこのファイルを無視する。
-  // 本番/テストの Cloudflare 化時に `npm run cf:deploy` でこの Worker をデプロイする。
+  // BigCommerce 配送/データAPI(Cloudflare Worker / Hono)。
+  //
+  // 環境は named environments で dev / prod を分ける(同一コードを2回デプロイ=ドリフト無し)。
+  //   dev : 現行の検証用ワーカー(既存URL・Basic認証は storefront 側)。`--env dev`
+  //   prod: 公開用ワーカー。go-live 時に作成しカスタムドメインを割当。`--env prod`
+  // デプロイ: `npm run deploy:dev` / `npm run deploy:prod`(いずれも --env を明示)。
+  // ※ 各環境は別ワーカー=シークレットも環境ごとに登録が必要:
+  //     wrangler secret put <NAME> --env dev   /   --env prod
+  //   (BIGCOMMERCE_STORE_HASH / _ACCESS_TOKEN / _CONTENT_TOKEN)
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nky-delivery-bigcommerce",
   "main": "src/index.ts",
   "compatibility_date": "2025-08-01",
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  "env": {
+    // 検証環境(現行稼働中のワーカーをそのまま dev とする)
+    "dev": {
+      "name": "nky-delivery-bigcommerce"
+    },
+    // 本番環境(公開時に初回デプロイ。独自ドメインは別途カスタムドメイン設定)
+    "prod": {
+      "name": "nky-delivery-bigcommerce-prod"
+      // 独自ドメインを使う場合は routes を設定(例):
+      // "routes": [{ "pattern": "api.nikkoyuba-netshop.com", "custom_domain": true }]
+    }
+  }
 }
