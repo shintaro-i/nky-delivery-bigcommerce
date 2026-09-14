@@ -8,7 +8,7 @@
  *   node scripts/assign-select-category.js --commit   … 実行
  */
 require('dotenv').config({ path: ['.env.local', '.env'] });
-const { client } = require('../lib/bigcommerce');
+const { client } = require('./lib/bigcommerce');
 
 const COMMIT = process.argv.includes('--commit');
 const SELECT_CATEGORY_NAME = 'セレクト商品';

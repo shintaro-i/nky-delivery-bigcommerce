@@ -9,7 +9,7 @@
  * 既に同名の商品があればスキップします（重複作成しません）。
  */
 require('dotenv').config({ path: ['.env.local', '.env'] });
-const { client } = require('../lib/bigcommerce');
+const { client } = require('./lib/bigcommerce');
 
 // 価格は税込（ストアが entered_inclusive 設定のため）。必要に応じて調整してください。
 const TEST_PRODUCTS = [

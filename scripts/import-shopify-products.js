@@ -18,7 +18,7 @@
 require('dotenv').config({ path: ['.env.local', '.env'] });
 const fs = require('fs');
 const { parse } = require('csv-parse/sync');
-const { client } = require('../lib/bigcommerce');
+const { client } = require('./lib/bigcommerce');
 
 const SHIPPING_TYPE_COL = 'shipping_type (product.metafields.custom.shipping_type)';
 

@@ -1,9 +1,9 @@
 # Cloudflare Worker (Hono) — 配送/データAPI
 
-本 API を **Cloudflare Worker（Hono）** に移行するための構成。
-既存の Express（`index.js` / `api/` / `lib/`）＋ Vercel は**当面そのまま残す**（デュアル構成）。
-Vercel は `wrangler.jsonc` / `src/` を無視するため現行デプロイに影響しない。
-本番/テストの Cloudflare 化時に、この Worker をデプロイして切り替える。
+本 API は **Cloudflare Worker（Hono, `src/`）一本**で運用する。
+以前併存していた Express（`index.js` / `api/` / `lib/`）＋ Vercel は、
+**ロジックの二重管理（送料計算が2ファイルに分かれてドリフトする）を避けるため廃止**した。
+現在の唯一の正は `src/`（送料ロジックは `src/lib/shipping.ts`）。
 
 ## 構成
 - `src/index.ts` … Hono アプリ（CORS・`/health`・各ルートをマウント）
@@ -13,7 +13,7 @@ Vercel は `wrangler.jsonc` / `src/` を無視するため現行デプロイに�
 - `wrangler.jsonc` / `tsconfig.json`
 
 ## 検証済み（`wrangler dev` + 実データ）
-Express版（:3001）と**出力一致**を確認：
+（移植時に）旧 Express 版（:3001）と**出力一致**を確認済み：
 shipping-calculate（直接指定・productId経由）／products 一覧・詳細・inventory／
 categories／news／orders/:id/shipping（英語県名解決含む）／404・addresses。
 
@@ -35,8 +35,9 @@ npx wrangler secret put BIGCOMMERCE_CONTENT_TOKEN
 npm run cf:deploy
 ```
 デプロイ後、**storefront 側の `API_BASE`** をこの Worker の公開URL
-（例：`https://nky-delivery-bigcommerce.<subdomain>.workers.dev`、または割当てた独自ドメイン）へ変更する。
+（現行：`https://nky-delivery-bigcommerce.nikkoyuba-ec.workers.dev`、または割当てた独自ドメイン）に設定する。
 
-## 切り替え完了後（任意）
-Express（`index.js` / `api/` / `lib/`）・`vercel.json`・`axios`/`express`/`cors` 依存は撤去可能。
-`scripts/`（カテゴリ割当・インポート等の一度きりCLI）は Node 実行のため据え置き。
+## 管理用スクリプト（据え置き）
+`scripts/`（カテゴリ割当・Shopifyインポート・テスト商品seed）は Node 実行の CommonJS ツールで、
+Worker 本体（`src/`）とは独立。BigCommerce クライアントは `scripts/lib/bigcommerce.js` を共用。
+`axios` / `csv-parse` / `dotenv` はこのスクリプト群専用の devDependencies。

@@ -1,6 +1,10 @@
 # nky-delivery-bigcommerce
 
-BigCommerce 複数配送先決済機能サンプル
+BigCommerce 配送/データAPI（**Cloudflare Worker / Hono**）
+
+> **構成**: 本APIは Cloudflare Worker（Hono, `src/`）**一本**で運用します。
+> かつて併存していた Express/Vercel 版（`index.js` + `api/` + `lib/`）は
+> 二重管理を避けるため廃止しました。送料などのロジックは `src/lib/` が唯一の正です。
 
 ## 機能
 
@@ -10,20 +14,27 @@ BigCommerce 複数配送先決済機能サンプル
 - BigCommerce 商品の取得（`shipping_type` カスタムフィールド連携）
 - BigCommerce 注文の複数配送先送料の再計算
 - 配送先情報の管理
-- 動作確認用フロントエンド（`/`）
 
 ## セットアップ
 
 ```bash
 npm install
-cp .env.example .env.local
+cp .env.example .dev.vars   # wrangler dev 用のローカルシークレット
 ```
 
-## 開発
+## 開発（Cloudflare ランタイムをローカルで）
 
 ```bash
-npm run dev
+npm run dev        # = wrangler dev
 ```
+
+## デプロイ
+
+```bash
+npm run deploy     # = wrangler deploy
+```
+
+デプロイ先: `https://nky-delivery-bigcommerce.nikkoyuba-ec.workers.dev`
 
 ## API エンドポイント
 
@@ -88,8 +99,10 @@ npm run seed
 権限が無い場合は、管理画面 → Products → Add で商品を作成し、
 カスタムフィールド `shipping_type` に上記いずれかの値を設定してください。
 
-## Vercel デプロイ
+## 管理用スクリプト（`scripts/`）
 
-```bash
-vercel
-```
+商品インポートやカテゴリ割当などの一回限りの管理ツールは `scripts/` に置いています。
+これらは Node で直接実行する CommonJS スクリプトで、Worker 本体（`src/`）とは独立です。
+BigCommerce クライアントは `scripts/lib/bigcommerce.js` を共用し、`.env.local` の
+`BIGCOMMERCE_STORE_HASH` / `BIGCOMMERCE_ACCESS_TOKEN` を読み込みます。
+（`axios` / `csv-parse` / `dotenv` はこのスクリプト群のためだけの devDependencies です。）

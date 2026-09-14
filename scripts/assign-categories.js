@@ -20,7 +20,7 @@
 require('dotenv').config({ path: ['.env.local', '.env'] });
 const fs = require('fs');
 const { parse } = require('csv-parse/sync');
-const { client } = require('../lib/bigcommerce');
+const { client } = require('./lib/bigcommerce');
 
 const csvPath = process.argv[2];
 const COMMIT = process.argv.includes('--commit');
