@@ -8,7 +8,7 @@ type RegionKey = "honshu" | "chushikoku_kyushu_hokkaido" | "okinawa";
 export const SHIPPING_RATES: Record<RegionKey, { normal: number; cool: number }> = {
   honshu: { normal: 910, cool: 1160 },
   chushikoku_kyushu_hokkaido: { normal: 1170, cool: 1420 },
-  okinawa: { normal: 1800, cool: 2000 },
+  okinawa: { normal: 1800, cool: 2050 },
 };
 
 export const PREFECTURE_TO_REGION: Record<string, RegionKey> = {
@@ -22,10 +22,10 @@ export const PREFECTURE_TO_REGION: Record<string, RegionKey> = {
   長野県: "honshu", 岐阜県: "honshu", 静岡県: "honshu",
   愛知県: "honshu", 三重県: "honshu", 滋賀県: "honshu",
   京都府: "honshu", 大阪府: "honshu", 兵庫県: "honshu",
-  奈良県: "honshu", 和歌山県: "honshu", 鳥取県: "honshu",
-  島根県: "honshu",
+  奈良県: "honshu", 和歌山県: "honshu",
   // 中四国・九州・北海道
   北海道: "chushikoku_kyushu_hokkaido",
+  鳥取県: "chushikoku_kyushu_hokkaido", 島根県: "chushikoku_kyushu_hokkaido",
   山口県: "chushikoku_kyushu_hokkaido",
   岡山県: "chushikoku_kyushu_hokkaido", 広島県: "chushikoku_kyushu_hokkaido",
   徳島県: "chushikoku_kyushu_hokkaido", 香川県: "chushikoku_kyushu_hokkaido",
@@ -48,9 +48,11 @@ const ENGLISH_PREFECTURE_TO_REGION: Record<string, RegionKey> = {
   fukui: "honshu", yamanashi: "honshu", nagano: "honshu", gifu: "honshu",
   shizuoka: "honshu", aichi: "honshu", mie: "honshu", shiga: "honshu",
   kyoto: "honshu", osaka: "honshu", hyogo: "honshu", nara: "honshu",
-  wakayama: "honshu", tottori: "honshu", shimane: "honshu",
+  wakayama: "honshu",
   // 中四国・九州・北海道
-  hokkaido: "chushikoku_kyushu_hokkaido", yamaguchi: "chushikoku_kyushu_hokkaido",
+  hokkaido: "chushikoku_kyushu_hokkaido",
+  tottori: "chushikoku_kyushu_hokkaido", shimane: "chushikoku_kyushu_hokkaido",
+  yamaguchi: "chushikoku_kyushu_hokkaido",
   okayama: "chushikoku_kyushu_hokkaido", hiroshima: "chushikoku_kyushu_hokkaido",
   tokushima: "chushikoku_kyushu_hokkaido", kagawa: "chushikoku_kyushu_hokkaido",
   ehime: "chushikoku_kyushu_hokkaido", kochi: "chushikoku_kyushu_hokkaido",
