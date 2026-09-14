@@ -181,7 +181,10 @@ export function createBc(env: Env) {
     const images = (product.images || [])
       .sort((a: any, b: any) => a.sort_order - b.sort_order)
       .map((img: any) => ({
-        url: img.url_standard,
+        // 詳細ページのメイン画像は大きく表示するため高解像度(zoom≒1280px)を優先。
+        // 無い場合は standard にフォールバック。
+        url: img.url_zoom || img.url_standard,
+        standard: img.url_standard,
         thumbnail: img.url_thumbnail,
         isThumbnail: img.is_thumbnail,
         alt: img.description || product.name,
